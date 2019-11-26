@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: singlejar
+Build-GPlatform: gcc-4.X.Y-crosstool-v18-llvm-libcxx-grtev4-k8
+
