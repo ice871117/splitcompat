@@ -1,7 +1,10 @@
 package com.google.android.play.core.tasks;
 
+
 public class RuntimeExecutionException extends RuntimeException {
-    public RuntimeExecutionException(Throwable th) {
-        super(th);
-    }
+
+   // $FF: renamed from: <init> (java.lang.Throwable) void
+   public void method_42(Throwable var1) {
+      super(var1);
+   }
 }

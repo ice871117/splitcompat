@@ -2,35 +2,38 @@ package com.google.android.play.core.splitinstall;
 
 import android.app.Activity;
 import android.content.IntentSender.SendIntentException;
+import com.google.android.play.core.splitinstall.SplitInstallRequest;
+import com.google.android.play.core.splitinstall.SplitInstallSessionState;
+import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener;
 import com.google.android.play.core.tasks.Task;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 public interface SplitInstallManager {
-    Task<Void> cancelInstall(int i);
 
-    Task<Void> deferredInstall(List<String> list);
+   void registerListener(SplitInstallStateUpdatedListener var1);
 
-    Task<Void> deferredLanguageInstall(List<Locale> list);
+   void unregisterListener(SplitInstallStateUpdatedListener var1);
 
-    Task<Void> deferredLanguageUninstall(List<Locale> list);
+   Task startInstall(SplitInstallRequest var1);
 
-    Task<Void> deferredUninstall(List<String> list);
+   boolean startConfirmationDialogForResult(SplitInstallSessionState var1, Activity var2, int var3) throws SendIntentException;
 
-    Set<String> getInstalledLanguages();
+   Task cancelInstall(int var1);
 
-    Set<String> getInstalledModules();
+   Task getSessionState(int var1);
 
-    Task<SplitInstallSessionState> getSessionState(int i);
+   Task getSessionStates();
 
-    Task<List<SplitInstallSessionState>> getSessionStates();
+   Task deferredUninstall(List var1);
 
-    void registerListener(SplitInstallStateUpdatedListener splitInstallStateUpdatedListener);
+   Task deferredInstall(List var1);
 
-    boolean startConfirmationDialogForResult(SplitInstallSessionState splitInstallSessionState, Activity activity, int i) throws SendIntentException;
+   Task deferredLanguageInstall(List var1);
 
-    Task<Integer> startInstall(SplitInstallRequest splitInstallRequest);
+   Task deferredLanguageUninstall(List var1);
 
-    void unregisterListener(SplitInstallStateUpdatedListener splitInstallStateUpdatedListener);
+   Set getInstalledLanguages();
+
+   Set getInstalledModules();
 }

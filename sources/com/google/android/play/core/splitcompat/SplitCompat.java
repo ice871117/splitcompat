@@ -6,16 +6,17 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.os.Build.VERSION;
 import android.util.Log;
-import com.google.android.play.core.internal.aa;
-import com.google.android.play.core.internal.ac;
-import com.google.android.play.core.internal.ad;
-import com.google.android.play.core.internal.ae;
-import com.google.android.play.core.internal.ag;
-import com.google.android.play.core.internal.az;
-import com.google.android.play.core.splitinstall.f;
-import com.google.android.play.core.splitinstall.h;
-import com.google.android.play.core.splitinstall.i;
-import com.google.android.play.core.splitinstall.k;
+import com.google.android.play.core.internal.class_123;
+import com.google.android.play.core.internal.class_136;
+import com.google.android.play.core.internal.class_137;
+import com.google.android.play.core.internal.class_138;
+import com.google.android.play.core.internal.class_144;
+import com.google.android.play.core.internal.class_145;
+import com.google.android.play.core.internal.class_17;
+import com.google.android.play.core.splitinstall.class_56;
+import com.google.android.play.core.splitinstall.class_58;
+import com.google.android.play.core.splitinstall.class_66;
+import com.google.android.play.core.splitinstall.class_67;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,219 +26,323 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.zip.ZipFile;
 
 public class SplitCompat {
-    private static final AtomicReference<SplitCompat> a = new AtomicReference<>(null);
-    /* access modifiers changed from: private */
-    public final e b;
-    private final Set<String> c = new HashSet();
 
-    private SplitCompat(Context context) {
-        try {
-            this.b = new e(context);
-        } catch (NameNotFoundException | IOException e) {
-            throw new aa("Failed to initialize FileStorage", e);
-        }
-    }
+   // $FF: renamed from: a java.util.concurrent.atomic.AtomicReference
+   private static final AtomicReference sInstance;
+   // $FF: renamed from: b com.google.android.play.core.splitcompat.e
+   private final SplitFileLogic mSplitFileLogic;
+   // $FF: renamed from: c java.util.Set
+   private final Set field_162;
 
-    private static void a(Context context, Set<File> set) {
-        AssetManager assets = context.getAssets();
-        for (File path : set) {
-            Log.d("SplitCompat", "addAssetPath completed with " + ((Integer) az.a((Object) assets, "addAssetPath", Integer.class, String.class, path.getPath())).intValue());
-        }
-    }
 
-    public static boolean a() {
-        return a.get() != null;
-    }
+   // $FF: renamed from: a (android.content.Context) boolean
+   public static boolean method_257(Context var0) {
+      return doInstall(var0, true);
+   }
 
-    public static boolean a(Context context) {
-        return a(context, true);
-    }
+   public static boolean install(Context var0) {
+      return doInstall(var0, false);
+   }
 
-    private static boolean a(Context context, boolean z) {
-        if (b()) {
-            return false;
-        }
-        SplitCompat splitCompat = (SplitCompat) a.get();
-        if (a.compareAndSet(null, new SplitCompat(context))) {
-            f.a(new ac(context, c.a(), new ae(context, splitCompat.b, new az()), splitCompat.b, new i()));
-            h.a(new n(splitCompat));
-            c.a().execute(new m(context));
-        }
-        try {
-            splitCompat.b(context, z);
-            return true;
-        } catch (Exception e) {
-            Log.e("SplitCompat", "Error installing additional splits", e);
-            return false;
-        }
-    }
-
-    /* JADX WARNING: Removed duplicated region for block: B:14:0x001d A[SYNTHETIC, Splitter:B:14:0x001d] */
-    /* Code decompiled incorrectly, please refer to instructions dump. */
-    private static boolean a(com.google.android.play.core.splitcompat.q r3) throws java.io.IOException {
-        /*
-            r2 = 0
-            java.util.zip.ZipFile r1 = new java.util.zip.ZipFile     // Catch:{ IOException -> 0x0019 }
-            java.io.File r0 = r3.a()     // Catch:{ IOException -> 0x0019 }
-            r1.<init>(r0)     // Catch:{ IOException -> 0x0019 }
-            java.lang.String r0 = "classes.dex"
-            java.util.zip.ZipEntry r0 = r1.getEntry(r0)     // Catch:{ IOException -> 0x0026 }
-            if (r0 == 0) goto L_0x0017
-            r0 = 1
-        L_0x0013:
-            r1.close()     // Catch:{ IOException -> 0x0026 }
-            return r0
-        L_0x0017:
-            r0 = 0
-            goto L_0x0013
-        L_0x0019:
-            r0 = move-exception
-            r1 = r2
-        L_0x001b:
-            if (r1 == 0) goto L_0x0020
-            r1.close()     // Catch:{ IOException -> 0x0021 }
-        L_0x0020:
-            throw r0
-        L_0x0021:
-            r1 = move-exception
-            com.google.android.play.core.internal.bh.a(r0, r1)
-            goto L_0x0020
-        L_0x0026:
-            r0 = move-exception
-            goto L_0x001b
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.google.android.play.core.splitcompat.SplitCompat.a(com.google.android.play.core.splitcompat.q):boolean");
-    }
-
-    private final synchronized void b(Context context) throws IOException {
-        HashSet hashSet = new HashSet();
-        SplitCompat splitCompat = (SplitCompat) a.get();
-        for (String b2 : splitCompat == null ? Collections.emptySet() : splitCompat.c()) {
-            hashSet.add(this.b.b(b2));
-        }
-        a(context, (Set<File>) hashSet);
-    }
-
-    private final synchronized void b(Context context, boolean z) throws IOException {
-        if (z) {
-            this.b.a();
-        } else {
-            c.a().execute(new p(this));
-        }
-        List<String> c2 = c(context);
-        Set<q> d = this.b.d();
-        HashSet hashSet = new HashSet();
-        Iterator it = d.iterator();
-        while (it.hasNext()) {
-            String b2 = ((q) it.next()).b();
-            if (c2.contains(b2)) {
-                if (z) {
-                    this.b.f(b2);
-                } else {
-                    hashSet.add(b2);
-                }
-                it.remove();
-            }
-        }
-        if (!hashSet.isEmpty()) {
-            c.a().execute(new o(this, hashSet));
-        }
-        HashSet hashSet2 = new HashSet();
-        for (q b3 : d) {
-            String b4 = b3.b();
-            if (!k.b(b4)) {
-                hashSet2.add(b4);
-            }
-        }
-        for (String str : c2) {
-            if (!k.b(str)) {
-                hashSet2.add(str);
-            }
-        }
-        HashSet<q> hashSet3 = new HashSet<>(d.size());
-        for (q qVar : d) {
-            if (k.a(qVar.b()) || hashSet2.contains(k.c(qVar.b()))) {
-                hashSet3.add(qVar);
-            }
-        }
-        d dVar = new d(this.b);
-        ad a2 = ag.a();
-        ClassLoader classLoader = context.getClassLoader();
-        if (z) {
-            a2.a(classLoader, dVar.a());
-        } else {
-            Iterator it2 = hashSet3.iterator();
-            while (it2.hasNext()) {
-                Set a3 = dVar.a((q) it2.next());
-                if (a3 == null) {
-                    it2.remove();
-                } else {
-                    a2.a(classLoader, a3);
-                }
-            }
-        }
-        HashSet hashSet4 = new HashSet();
-        for (q qVar2 : hashSet3) {
-            if (!a(qVar2) || a2.a(classLoader, this.b.c(qVar2.b()), qVar2.a(), z)) {
-                hashSet4.add(qVar2.a());
-            } else {
-                String valueOf = String.valueOf(qVar2.a());
-                Log.w("SplitCompat", new StringBuilder(String.valueOf(valueOf).length() + 24).append("split was not installed ").append(valueOf).toString());
-            }
-        }
-        a(context, (Set<File>) hashSet4);
-        for (q qVar3 : hashSet3) {
-            if (hashSet4.contains(qVar3.a())) {
-                String b5 = qVar3.b();
-                Log.d("SplitCompat", new StringBuilder(String.valueOf(b5).length() + 30).append("Split '").append(b5).append("' installation emulated").toString());
-                this.c.add(qVar3.b());
-            } else {
-                String b6 = qVar3.b();
-                Log.d("SplitCompat", new StringBuilder(String.valueOf(b6).length() + 35).append("Split '").append(b6).append("' installation not emulated.").toString());
-            }
-        }
-    }
-
-    private static boolean b() {
-        return VERSION.SDK_INT < 21;
-    }
-
-    private static List<String> c(Context context) throws IOException {
-        String packageName = context.getPackageName();
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(packageName, 0);
-            return packageInfo.splitNames == null ? new ArrayList() : Arrays.asList(packageInfo.splitNames);
-        } catch (NameNotFoundException e) {
-            throw new IOException(String.format("Cannot load data for application '%s'", new Object[]{packageName}), e);
-        }
-    }
-
-    /* access modifiers changed from: private */
-    public final synchronized Set<String> c() {
-        return new HashSet(this.c);
-    }
-
-    public static boolean install(Context context) {
-        return a(context, false);
-    }
-
-    public static boolean installActivity(Context context) {
-        if (b()) {
-            return false;
-        }
-        SplitCompat splitCompat = (SplitCompat) a.get();
-        if (splitCompat == null) {
+   public static boolean installActivity(Context var0) {
+      if(method_258()) {
+         return false;
+      } else {
+         SplitCompat splitCompat;
+         if((splitCompat = (SplitCompat) sInstance.get()) == null) {
             throw new IllegalStateException("SplitCompat.installActivity can only be called if SplitCompat.install is first called at startup on application context.");
-        }
-        try {
-            splitCompat.b(context);
+         } else {
+            try {
+               splitCompat.method_264(var0);
+               return true;
+            } catch (Exception e) {
+               Log.e("SplitCompat", "Error installing additional splits", e);
+               return false;
+            }
+         }
+      }
+   }
+
+   // $FF: renamed from: b () boolean
+   private static boolean method_258() {
+      return VERSION.SDK_INT < 21;
+   }
+
+   // $FF: renamed from: c () java.util.Set
+   private final synchronized Set method_259() {
+      return new HashSet(this.field_162);
+   }
+
+   // $FF: renamed from: a (android.content.Context, boolean) boolean
+   private static boolean doInstall(Context var0, boolean var1) {
+      if(method_258()) {
+         return false;
+      } else {
+         AtomicReference var10000 = sInstance;
+         SplitCompat var10002 = new SplitCompat();
+         var10002.method_261(var0);
+         boolean var2 = var10000.compareAndSet((Object)null, var10002);
+         SplitCompat splitCompat = (SplitCompat) sInstance.get();
+         if(var2) {
+            class_138 var6 = new class_138;
+            Executor var10003 = class_89.method_255();
+            class_144 var10004 = new class_144;
+            SplitFileLogic var10007 = splitCompat.mSplitFileLogic;
+            class_123 var10008 = new class_123;
+            var10008.method_410();
+            var10004.method_482(var0, var10007, var10008);
+            SplitFileLogic var10005 = splitCompat.mSplitFileLogic;
+            class_67 var10006 = new class_67;
+            var10006.method_154();
+            var6.method_463(var0, var10003, var10004, var10005, var10006);
+            class_58.method_117(var6);
+            class_76 var7 = new class_76;
+            var7.method_199(splitCompat);
+            class_56.method_109(var7);
+            Executor var8 = class_89.method_255();
+            class_79 var10001 = new class_79;
+            var10001.method_204(var0);
+            var8.execute(var10001);
+         }
+
+         try {
+            splitCompat.method_263(var0, var1);
             return true;
-        } catch (Exception e) {
-            Log.e("SplitCompat", "Error installing additional splits", e);
+         } catch (Exception var5) {
+            Log.e("SplitCompat", "Error installing additional splits", var5);
             return false;
-        }
-    }
+         }
+      }
+   }
+
+   // $FF: renamed from: <init> (android.content.Context) void
+   private void method_261(Context var1) {
+      super();
+      this.field_162 = new HashSet();
+
+      try {
+         SplitFileLogic var10001 = new SplitFileLogic;
+         var10001.method_230(var1);
+         this.mSplitFileLogic = var10001;
+      } catch (IOException var3) {
+         class_137 var10000 = new class_137;
+         var10000.method_462("Failed to initialize FileStorage", var3);
+         throw var10000;
+      }
+   }
+
+   // $FF: renamed from: a () boolean
+   public static boolean method_262() {
+      return sInstance.get() != null;
+   }
+
+   // $FF: renamed from: b (android.content.Context, boolean) void
+   private final synchronized void method_263(Context var1, boolean syncDelete) throws IOException {
+      Executor var10000;
+      if(syncDelete) {
+         this.mSplitFileLogic.method_232();
+      } else {
+         var10000 = class_89.method_255();
+         class_73 var10001 = new class_73;
+         var10001.method_194(this);
+         var10000.execute(var10001);
+      }
+
+      List var3 = method_267(var1);
+      List var15 = var3;
+      SplitCompat var14 = this;
+      Set var17 = this.mSplitFileLogic.method_245();
+      HashSet var18 = new HashSet();
+      Iterator var19 = var17.iterator();
+
+      while(var19.hasNext()) {
+         String var20 = ((class_74)var19.next()).method_197();
+         if(var15.contains(var20)) {
+            if(syncDelete) {
+               var14.mSplitFileLogic.method_251(var20);
+            } else {
+               var18.add(var20);
+            }
+
+            var19.remove();
+         }
+      }
+
+      if(!var18.isEmpty()) {
+         var10000 = class_89.method_255();
+         class_77 var27 = new class_77;
+         var27.method_200(var14, var18);
+         var10000.execute(var27);
+      }
+
+      Set var24 = var17;
+      HashSet var25 = new HashSet();
+      Iterator var28 = var17.iterator();
+
+      while(var28.hasNext()) {
+         String var32;
+         if(!class_66.method_149(var32 = ((class_74)var28.next()).method_197())) {
+            var25.add(var32);
+         }
+      }
+
+      var28 = var3.iterator();
+
+      while(var28.hasNext()) {
+         String var30;
+         if(!class_66.method_149(var30 = (String)var28.next())) {
+            var25.add(var30);
+         }
+      }
+
+      HashSet var29 = new HashSet(var24.size());
+      Iterator var31 = var24.iterator();
+
+      while(var31.hasNext()) {
+         class_74 var33;
+         if(class_66.method_148((var33 = (class_74)var31.next()).method_197()) || var25.contains(class_66.method_150(var33.method_197()))) {
+            var29.add(var33);
+         }
+      }
+
+      class_86 var26 = new class_86;
+      var26.method_217(this.mSplitFileLogic);
+      class_86 var6 = var26;
+      class_17 var7 = class_145.method_488();
+      ClassLoader var8 = var1.getClassLoader();
+      if(syncDelete) {
+         Set var9 = var6.method_218();
+         var7.method_37(var8, var9);
+      } else {
+         Iterator var21 = var29.iterator();
+
+         while(var21.hasNext()) {
+            Set var10;
+            if((var10 = var6.method_219((class_74)var21.next())) == null) {
+               var21.remove();
+            } else {
+               var7.method_37(var8, var10);
+            }
+         }
+      }
+
+      HashSet var22 = new HashSet();
+      Iterator var23 = var29.iterator();
+
+      class_74 var11;
+      while(var23.hasNext()) {
+         if(!method_266(var11 = (class_74)var23.next()) || var7.method_38(var8, this.mSplitFileLogic.method_240(var11.method_197()), var11.method_196(), syncDelete)) {
+            var22.add(var11.method_196());
+         } else {
+            String var13 = String.valueOf(var11.method_196());
+            Log.w("SplitCompat", (new StringBuilder(24 + String.valueOf(var13).length())).append("split was not installed ").append(var13).toString());
+         }
+      }
+
+      method_265(var1, var22);
+      var23 = var29.iterator();
+
+      while(var23.hasNext()) {
+         var11 = (class_74)var23.next();
+         String var12;
+         if(var22.contains(var11.method_196())) {
+            var12 = var11.method_197();
+            Log.d("SplitCompat", (new StringBuilder(30 + String.valueOf(var12).length())).append("Split \'").append(var12).append("\' installation emulated").toString());
+            this.field_162.add(var11.method_197());
+         } else {
+            var12 = var11.method_197();
+            Log.d("SplitCompat", (new StringBuilder(35 + String.valueOf(var12).length())).append("Split \'").append(var12).append("\' installation not emulated.").toString());
+         }
+      }
+
+   }
+
+   // $FF: renamed from: b (android.content.Context) void
+   private final synchronized void method_264(Context var1) throws IOException {
+      HashSet var2 = new HashSet();
+      SplitCompat var5;
+      Iterator var3 = ((var5 = (SplitCompat) sInstance.get()) == null?Collections.emptySet():var5.method_259()).iterator();
+
+      while(var3.hasNext()) {
+         String var4 = (String)var3.next();
+         var2.add(this.mSplitFileLogic.method_234(var4));
+      }
+
+      method_265(var1, var2);
+   }
+
+   // $FF: renamed from: a (android.content.Context, java.util.Set) void
+   private static void method_265(Context var0, Set var1) {
+      AssetManager var2 = var0.getAssets();
+      Iterator var3 = var1.iterator();
+
+      while(var3.hasNext()) {
+         File var4 = (File)var3.next();
+         int var5 = ((Integer)class_123.method_401(var2, "addAssetPath", Integer.class, String.class, var4.getPath())).intValue();
+         Log.d("SplitCompat", (new StringBuilder(39)).append("addAssetPath completed with ").append(var5).toString());
+      }
+
+   }
+
+   // $FF: renamed from: a (com.google.android.play.core.splitcompat.q) boolean
+   private static boolean method_266(class_74 var0) throws IOException {
+      ZipFile var1 = null;
+
+      try {
+         boolean var2 = (var1 = new ZipFile(var0.method_196())).getEntry("classes.dex") != null;
+         var1.close();
+         return var2;
+      } catch (IOException var5) {
+         if(var1 != null) {
+            try {
+               var1.close();
+            } catch (IOException var4) {
+               class_136.method_453(var5, var4);
+            }
+         }
+
+         throw var5;
+      }
+   }
+
+   // $FF: renamed from: c (android.content.Context) java.util.List
+   private static List method_267(Context var0) throws IOException {
+      String var1 = var0.getPackageName();
+
+      try {
+         Object var2;
+         PackageInfo var4;
+         if((var4 = var0.getPackageManager().getPackageInfo(var1, 0)).splitNames == null) {
+            var2 = new ArrayList();
+         } else {
+            var2 = Arrays.asList(var4.splitNames);
+         }
+
+         return (List)var2;
+      } catch (NameNotFoundException var5) {
+         throw new IOException(String.format("Cannot load data for application \'%s\'", new Object[]{var1}), var5);
+      }
+   }
+
+   // $FF: renamed from: a (com.google.android.play.core.splitcompat.SplitCompat) java.util.Set
+   // $FF: synthetic method
+   static Set method_268(SplitCompat var0) {
+      return var0.method_259();
+   }
+
+   // $FF: renamed from: b (com.google.android.play.core.splitcompat.SplitCompat) com.google.android.play.core.splitcompat.e
+   // $FF: synthetic method
+   static SplitFileLogic method_269(SplitCompat var0) {
+      return var0.mSplitFileLogic;
+   }
+
+   // $FF: renamed from: <clinit> () void
+   static void method_270() {
+      sInstance = new AtomicReference((Object)null);
+   }
 }

@@ -1,16 +1,20 @@
 package com.google.android.play.core.splitinstall;
 
-import com.google.android.play.core.splitinstall.model.a;
+import com.google.android.play.core.splitinstall.model.class_130;
 
 public class SplitInstallException extends RuntimeException {
-    private final int a;
 
-    public SplitInstallException(int i) {
-        super(String.format("Split Install Error(%d): %s", new Object[]{Integer.valueOf(i), a.a(i)}));
-        this.a = i;
-    }
+   // $FF: renamed from: a int
+   private final int field_0;
 
-    public int getErrorCode() {
-        return this.a;
-    }
+
+   // $FF: renamed from: <init> (int) void
+   public void method_39(int var1) {
+      super(String.format("Split Install Error(%d): %s", new Object[]{Integer.valueOf(var1), class_130.method_434(var1)}));
+      this.field_0 = var1;
+   }
+
+   public int getErrorCode() {
+      return this.field_0;
+   }
 }

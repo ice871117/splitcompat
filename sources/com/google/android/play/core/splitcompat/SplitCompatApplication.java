@@ -2,11 +2,17 @@ package com.google.android.play.core.splitcompat;
 
 import android.app.Application;
 import android.content.Context;
+import com.google.android.play.core.splitcompat.SplitCompat;
 
 public class SplitCompatApplication extends Application {
-    /* access modifiers changed from: protected */
-    public void attachBaseContext(Context context) {
-        super.attachBaseContext(context);
-        SplitCompat.install(this);
-    }
+
+   // $FF: renamed from: <init> () void
+   public void method_284() {
+      super();
+   }
+
+   protected void attachBaseContext(Context var1) {
+      super.attachBaseContext(var1);
+      SplitCompat.install(this);
+   }
 }

@@ -1,13 +1,16 @@
 package com.google.android.play.core.install.model;
 
+
 public @interface InstallStatus {
-    public static final int CANCELED = 6;
-    public static final int DOWNLOADED = 11;
-    public static final int DOWNLOADING = 2;
-    public static final int FAILED = 5;
-    public static final int INSTALLED = 4;
-    public static final int INSTALLING = 3;
-    public static final int PENDING = 1;
-    public static final int REQUIRES_UI_INTENT = 10;
-    public static final int UNKNOWN = 0;
+
+   int UNKNOWN = 0;
+   int REQUIRES_UI_INTENT = 10;
+   int PENDING = 1;
+   int DOWNLOADING = 2;
+   int DOWNLOADED = 11;
+   int INSTALLING = 3;
+   int INSTALLED = 4;
+   int FAILED = 5;
+   int CANCELED = 6;
+
 }

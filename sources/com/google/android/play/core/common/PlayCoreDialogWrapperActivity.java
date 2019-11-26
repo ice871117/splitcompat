@@ -8,41 +8,52 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 
 public class PlayCoreDialogWrapperActivity extends Activity {
-    private ResultReceiver a;
 
-    /* access modifiers changed from: protected */
-    public void onActivityResult(int i, int i2, Intent intent) {
-        super.onActivityResult(i, i2, intent);
-        if (i == 0 && this.a != null) {
-            if (i2 == -1) {
-                this.a.send(1, new Bundle());
-            } else if (i2 == 0) {
-                this.a.send(2, new Bundle());
+   // $FF: renamed from: a android.os.ResultReceiver
+   private ResultReceiver field_181;
+
+
+   // $FF: renamed from: <init> () void
+   public void method_289() {
+      super();
+   }
+
+   protected void onCreate(Bundle var1) {
+      super.onCreate(var1);
+      if(var1 == null) {
+         this.field_181 = (ResultReceiver)this.getIntent().getParcelableExtra("result_receiver");
+         PendingIntent var2 = (PendingIntent)this.getIntent().getExtras().get("confirmation_intent");
+
+         try {
+            this.startIntentSenderForResult(var2.getIntentSender(), 0, (Intent)null, 0, 0, 0);
+         } catch (SendIntentException var3) {
+            if(this.field_181 != null) {
+               this.field_181.send(3, new Bundle());
             }
-        }
-        finish();
-    }
 
-    /* access modifiers changed from: protected */
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-        if (bundle == null) {
-            this.a = (ResultReceiver) getIntent().getParcelableExtra("result_receiver");
-            try {
-                startIntentSenderForResult(((PendingIntent) getIntent().getExtras().get("confirmation_intent")).getIntentSender(), 0, null, 0, 0, 0);
-            } catch (SendIntentException e) {
-                if (this.a != null) {
-                    this.a.send(3, new Bundle());
-                }
-                finish();
-            }
-        } else {
-            this.a = (ResultReceiver) bundle.getParcelable("result_receiver");
-        }
-    }
+            this.finish();
+            return;
+         }
+      } else {
+         this.field_181 = (ResultReceiver)var1.getParcelable("result_receiver");
+      }
 
-    /* access modifiers changed from: protected */
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putParcelable("result_receiver", this.a);
-    }
+   }
+
+   protected void onSaveInstanceState(Bundle var1) {
+      var1.putParcelable("result_receiver", this.field_181);
+   }
+
+   protected void onActivityResult(int var1, int var2, Intent var3) {
+      super.onActivityResult(var1, var2, var3);
+      if(var1 == 0 && this.field_181 != null) {
+         if(var2 == -1) {
+            this.field_181.send(1, new Bundle());
+         } else if(var2 == 0) {
+            this.field_181.send(2, new Bundle());
+         }
+      }
+
+      this.finish();
+   }
 }

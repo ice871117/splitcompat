@@ -6,213 +6,275 @@ import android.content.Context;
 import android.content.Intent;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.a;
+import com.google.android.play.core.appupdate.class_21;
 import com.google.android.play.core.install.InstallException;
 import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
-import com.google.android.play.core.listener.StateUpdatedListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.android.play.core.tasks.Tasks;
 
 public class FakeAppUpdateManager implements AppUpdateManager {
-    private final a a;
-    private final Context b;
-    private int c = 0;
-    private int d = 0;
-    private boolean e = false;
-    private int f = 0;
-    private boolean g = false;
-    private boolean h = false;
-    private boolean i = false;
-    private Integer j;
-    private Integer k;
 
-    public FakeAppUpdateManager(Context context) {
-        this.a = new a(context);
-        this.b = context;
-    }
+   // $FF: renamed from: a com.google.android.play.core.appupdate.a
+   private final class_21 field_105;
+   // $FF: renamed from: b android.content.Context
+   private final Context field_106;
+   // $FF: renamed from: c int
+   private int field_107;
+   // $FF: renamed from: d int
+   private int field_108;
+   // $FF: renamed from: e boolean
+   private boolean field_109;
+   // $FF: renamed from: f int
+   private int field_110;
+   // $FF: renamed from: g boolean
+   private boolean field_111;
+   // $FF: renamed from: h boolean
+   private boolean field_112;
+   // $FF: renamed from: i boolean
+   private boolean field_113;
+   // $FF: renamed from: j java.lang.Integer
+   private Integer field_114;
+   // $FF: renamed from: k java.lang.Integer
+   private Integer field_115;
 
-    private final int a() {
-        if (this.e) {
-            return (this.c == 0 || this.c == 4 || this.c == 5 || this.c == 6) ? 2 : 3;
-        }
-        return 1;
-    }
 
-    private final void b() {
-        this.a.a(InstallState.a(this.c, this.d, this.b.getPackageName()));
-    }
+   // $FF: renamed from: <init> (android.content.Context) void
+   public void method_168(Context var1) {
+      super();
+      this.field_107 = 0;
+      this.field_108 = 0;
+      this.field_109 = false;
+      this.field_110 = 0;
+      this.field_111 = false;
+      this.field_112 = false;
+      this.field_113 = false;
+      class_21 var10001 = new class_21;
+      var10001.method_53(var1);
+      this.field_105 = var10001;
+      this.field_106 = var1;
+   }
 
-    public Task<Void> completeUpdate() {
-        if (this.d != 0 && this.d != 1) {
-            return Tasks.a((Exception) new InstallException(this.d));
-        }
-        if (this.c != 11) {
-            return this.c == 3 ? Tasks.a((Exception) new InstallException(-8)) : Tasks.a((Exception) new InstallException(-7));
-        }
-        this.c = 3;
-        this.i = true;
-        if (Integer.valueOf(0).equals(this.k)) {
-            b();
-        }
-        return Tasks.a(null);
-    }
+   public void registerListener(InstallStateUpdatedListener var1) {
+      this.field_105.method_48(var1);
+   }
 
-    public void downloadCompletes() {
-        if (this.c == 2 || this.c == 1) {
-            this.c = 11;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            } else if (Integer.valueOf(1).equals(this.k)) {
-                completeUpdate();
-            }
-        }
-    }
+   public void unregisterListener(InstallStateUpdatedListener var1) {
+      this.field_105.method_49(var1);
+   }
 
-    public void downloadFails() {
-        if (this.c == 1 || this.c == 2) {
-            this.c = 5;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-            this.k = null;
-            this.h = false;
-            this.c = 0;
-        }
-    }
+   public Task getAppUpdateInfo() {
+      if(this.field_108 != 0 && this.field_108 != 1) {
+         InstallException var10000 = new InstallException;
+         var10000.method_310(this.field_108);
+         return Tasks.method_312(var10000);
+      } else {
+         PendingIntent var1 = null;
+         PendingIntent var2 = null;
+         if(this.method_169() == 2 && (this.field_108 == 0 || this.field_108 == 1 && Integer.valueOf(0).equals(this.field_114))) {
+            var1 = PendingIntent.getBroadcast(this.field_106, 0, new Intent(), 0);
+         }
 
-    public void downloadStarts() {
-        if (this.c == 1) {
-            this.c = 2;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-        }
-    }
+         if(this.method_169() == 2 && (this.field_108 == 0 || this.field_108 == 1 && Integer.valueOf(1).equals(this.field_114))) {
+            var2 = PendingIntent.getBroadcast(this.field_106, 0, new Intent(), 0);
+         }
 
-    public Task<AppUpdateInfo> getAppUpdateInfo() {
-        if (this.d != 0 && this.d != 1) {
-            return Tasks.a((Exception) new InstallException(this.d));
-        }
-        return Tasks.a(AppUpdateInfo.a(this.b.getPackageName(), this.f, a(), this.c, (a() != 2 || (this.d != 0 && (this.d != 1 || !Integer.valueOf(1).equals(this.j)))) ? null : PendingIntent.getBroadcast(this.b, 0, new Intent(), 0), (a() != 2 || (this.d != 0 && (this.d != 1 || !Integer.valueOf(0).equals(this.j)))) ? null : PendingIntent.getBroadcast(this.b, 0, new Intent(), 0)));
-    }
+         return Tasks.method_311(AppUpdateInfo.method_190(this.field_106.getPackageName(), this.field_110, this.method_169(), this.field_107, var2, var1));
+      }
+   }
 
-    public Integer getPartiallyAllowedUpdateType() {
-        return this.j;
-    }
+   public boolean startUpdateFlowForResult(AppUpdateInfo var1, int var2, Activity var3, int var4) {
+      if(!var1.isUpdateTypeAllowed(var2)) {
+         return false;
+      } else {
+         if(var2 == 1) {
+            this.field_112 = true;
+            this.field_115 = Integer.valueOf(1);
+         } else {
+            this.field_111 = true;
+            this.field_115 = Integer.valueOf(0);
+         }
 
-    public Integer getTypeForUpdateInProgress() {
-        return this.k;
-    }
+         return true;
+      }
+   }
 
-    public void installCompletes() {
-        if (this.c == 3) {
-            this.c = 4;
-            this.e = false;
-            this.f = 0;
-            this.h = false;
-            this.i = false;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-            this.k = null;
-            this.c = 0;
-        }
-    }
+   public Task completeUpdate() {
+      InstallException var10000;
+      if(this.field_108 != 0 && this.field_108 != 1) {
+         var10000 = new InstallException;
+         var10000.method_310(this.field_108);
+         return Tasks.method_312(var10000);
+      } else if(this.field_107 == 11) {
+         this.field_107 = 3;
+         this.field_113 = true;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
 
-    public void installFails() {
-        if (this.c == 3) {
-            this.c = 5;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-            this.k = null;
-            this.i = false;
-            this.h = false;
-            this.c = 0;
-        }
-    }
+         return Tasks.method_311((Object)null);
+      } else if(this.field_107 == 3) {
+         var10000 = new InstallException;
+         var10000.method_310(-8);
+         return Tasks.method_312(var10000);
+      } else {
+         var10000 = new InstallException;
+         var10000.method_310(-7);
+         return Tasks.method_312(var10000);
+      }
+   }
 
-    public boolean isConfirmationDialogVisible() {
-        return this.g;
-    }
+   public void setUpdateAvailable(int var1) {
+      this.field_109 = true;
+      this.field_110 = var1;
+   }
 
-    public boolean isImmediateFlowVisible() {
-        return this.h;
-    }
+   public void setUpdateNotAvailable() {
+      this.field_109 = false;
+   }
 
-    public boolean isInstallSplashScreenVisible() {
-        return this.i;
-    }
+   public void userAcceptsUpdate() {
+      if(this.field_111 || this.field_112) {
+         this.field_111 = false;
+         this.field_107 = 1;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
+      }
 
-    public void registerListener(InstallStateUpdatedListener installStateUpdatedListener) {
-        this.a.a((StateUpdatedListener<StateT>) installStateUpdatedListener);
-    }
+   }
 
-    public void setInstallErrorCode(int i2) {
-        this.d = i2;
-    }
+   public void userRejectsUpdate() {
+      if(this.field_111 || this.field_112) {
+         this.field_111 = false;
+         this.field_112 = false;
+         this.field_115 = null;
+         this.field_107 = 0;
+      }
 
-    public void setPartiallyAllowedUpdateType(Integer num) {
-        this.j = num;
-        this.d = 1;
-    }
+   }
 
-    public void setUpdateAvailable(int i2) {
-        this.e = true;
-        this.f = i2;
-    }
+   public void downloadStarts() {
+      if(this.field_107 == 1) {
+         this.field_107 = 2;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
+      }
 
-    public void setUpdateNotAvailable() {
-        this.e = false;
-    }
+   }
 
-    public boolean startUpdateFlowForResult(AppUpdateInfo appUpdateInfo, int i2, Activity activity, int i3) {
-        if (!appUpdateInfo.isUpdateTypeAllowed(i2)) {
-            return false;
-        }
-        if (i2 == 1) {
-            this.h = true;
-            this.k = Integer.valueOf(1);
-        } else {
-            this.g = true;
-            this.k = Integer.valueOf(0);
-        }
-        return true;
-    }
+   public void downloadCompletes() {
+      if(this.field_107 == 2 || this.field_107 == 1) {
+         this.field_107 = 11;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+            return;
+         }
 
-    public void unregisterListener(InstallStateUpdatedListener installStateUpdatedListener) {
-        this.a.b(installStateUpdatedListener);
-    }
+         if(Integer.valueOf(1).equals(this.field_115)) {
+            this.completeUpdate();
+         }
+      }
 
-    public void userAcceptsUpdate() {
-        if (this.g || this.h) {
-            this.g = false;
-            this.c = 1;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-        }
-    }
+   }
 
-    public void userCancelsDownload() {
-        if (this.c == 1 || this.c == 2) {
-            this.c = 6;
-            if (Integer.valueOf(0).equals(this.k)) {
-                b();
-            }
-            this.k = null;
-            this.h = false;
-            this.c = 0;
-        }
-    }
+   public void installCompletes() {
+      if(this.field_107 == 3) {
+         this.field_107 = 4;
+         this.field_109 = false;
+         this.field_110 = 0;
+         this.field_112 = false;
+         this.field_113 = false;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
 
-    public void userRejectsUpdate() {
-        if (this.g || this.h) {
-            this.g = false;
-            this.h = false;
-            this.k = null;
-            this.c = 0;
-        }
-    }
+         this.field_115 = null;
+         this.field_107 = 0;
+      }
+
+   }
+
+   public void setInstallErrorCode(int var1) {
+      this.field_108 = var1;
+   }
+
+   public void setPartiallyAllowedUpdateType(Integer var1) {
+      this.field_114 = var1;
+      this.field_108 = 1;
+   }
+
+   public void userCancelsDownload() {
+      if(this.field_107 == 1 || this.field_107 == 2) {
+         this.field_107 = 6;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
+
+         this.field_115 = null;
+         this.field_112 = false;
+         this.field_107 = 0;
+      }
+
+   }
+
+   public void downloadFails() {
+      if(this.field_107 == 1 || this.field_107 == 2) {
+         this.field_107 = 5;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
+
+         this.field_115 = null;
+         this.field_112 = false;
+         this.field_107 = 0;
+      }
+
+   }
+
+   public void installFails() {
+      if(this.field_107 == 3) {
+         this.field_107 = 5;
+         if(Integer.valueOf(0).equals(this.field_115)) {
+            this.method_170();
+         }
+
+         this.field_115 = null;
+         this.field_113 = false;
+         this.field_112 = false;
+         this.field_107 = 0;
+      }
+
+   }
+
+   public boolean isConfirmationDialogVisible() {
+      return this.field_111;
+   }
+
+   public boolean isImmediateFlowVisible() {
+      return this.field_112;
+   }
+
+   public Integer getTypeForUpdateInProgress() {
+      return this.field_115;
+   }
+
+   public Integer getPartiallyAllowedUpdateType() {
+      return this.field_114;
+   }
+
+   public boolean isInstallSplashScreenVisible() {
+      return this.field_113;
+   }
+
+   // $FF: renamed from: a () int
+   private final int method_169() {
+      return this.field_109?(this.field_107 != 0 && this.field_107 != 4 && this.field_107 != 5 && this.field_107 != 6?3:2):1;
+   }
+
+   // $FF: renamed from: b () void
+   private final void method_170() {
+      this.field_105.method_51(InstallState.method_44(this.field_107, this.field_108, this.field_106.getPackageName()));
+   }
 }

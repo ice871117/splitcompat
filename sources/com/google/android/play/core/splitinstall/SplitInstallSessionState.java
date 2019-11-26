@@ -1,42 +1,51 @@
 package com.google.android.play.core.splitinstall;
 
 import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
+import com.google.android.play.core.splitinstall.class_61;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class SplitInstallSessionState {
-    public static SplitInstallSessionState a(Bundle bundle) {
-        return new a(bundle.getInt("session_id"), bundle.getInt("status"), bundle.getInt("error_code"), bundle.getLong("bytes_downloaded"), bundle.getLong("total_bytes_to_download"), bundle.getStringArrayList("module_names"), bundle.getStringArrayList("languages"), (PendingIntent) bundle.getParcelable("user_confirmation_intent"), bundle.getParcelableArrayList("split_file_intents"));
-    }
 
-    /* access modifiers changed from: 0000 */
-    public abstract List<String> a();
+   // $FF: renamed from: <init> () void
+   public void method_126() {
+      super();
+   }
 
-    /* access modifiers changed from: 0000 */
-    public abstract List<String> b();
+   // $FF: renamed from: a (android.os.Bundle) com.google.android.play.core.splitinstall.SplitInstallSessionState
+   public static SplitInstallSessionState method_127(Bundle var0) {
+      class_61 var10000 = new class_61;
+      var10000.method_131(var0.getInt("session_id"), var0.getInt("status"), var0.getInt("error_code"), var0.getLong("bytes_downloaded"), var0.getLong("total_bytes_to_download"), var0.getStringArrayList("module_names"), var0.getStringArrayList("languages"), (PendingIntent)var0.getParcelable("user_confirmation_intent"), var0.getParcelableArrayList("split_file_intents"));
+      return var10000;
+   }
 
-    public abstract long bytesDownloaded();
+   public abstract int sessionId();
 
-    /* access modifiers changed from: 0000 */
-    public abstract List<Intent> c();
+   public abstract int status();
 
-    public abstract int errorCode();
+   public abstract int errorCode();
 
-    public List<String> languages() {
-        return b() != null ? new ArrayList(b()) : new ArrayList();
-    }
+   public abstract long bytesDownloaded();
 
-    public List<String> moduleNames() {
-        return a() != null ? new ArrayList(a()) : new ArrayList();
-    }
+   public abstract long totalBytesToDownload();
 
-    public abstract PendingIntent resolutionIntent();
+   // $FF: renamed from: a () java.util.List
+   abstract List method_128();
 
-    public abstract int sessionId();
+   // $FF: renamed from: b () java.util.List
+   abstract List method_129();
 
-    public abstract int status();
+   public List moduleNames() {
+      return this.method_128() != null?new ArrayList(this.method_128()):new ArrayList();
+   }
 
-    public abstract long totalBytesToDownload();
+   public List languages() {
+      return this.method_129() != null?new ArrayList(this.method_129()):new ArrayList();
+   }
+
+   public abstract PendingIntent resolutionIntent();
+
+   // $FF: renamed from: c () java.util.List
+   abstract List method_130();
 }

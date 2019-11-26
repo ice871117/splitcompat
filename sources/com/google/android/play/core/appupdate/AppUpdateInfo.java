@@ -1,33 +1,37 @@
 package com.google.android.play.core.appupdate;
 
 import android.app.PendingIntent;
+import com.google.android.play.core.appupdate.class_72;
 
 public abstract class AppUpdateInfo {
-    public static AppUpdateInfo a(String str, int i, int i2, int i3, PendingIntent pendingIntent, PendingIntent pendingIntent2) {
-        return new i(str, i, i2, i3, pendingIntent, pendingIntent2);
-    }
 
-    /* access modifiers changed from: 0000 */
-    public abstract PendingIntent a();
+   // $FF: renamed from: <init> () void
+   public void method_189() {
+      super();
+   }
 
-    public abstract int availableVersionCode();
+   // $FF: renamed from: a (java.lang.String, int, int, int, android.app.PendingIntent, android.app.PendingIntent) com.google.android.play.core.appupdate.AppUpdateInfo
+   public static AppUpdateInfo method_190(String var0, int var1, int var2, int var3, PendingIntent var4, PendingIntent var5) {
+      class_72 var10000 = new class_72;
+      var10000.method_193(var0, var1, var2, var3, var4, var5);
+      return var10000;
+   }
 
-    /* access modifiers changed from: 0000 */
-    public abstract PendingIntent b();
+   public abstract String packageName();
 
-    public abstract int installStatus();
+   public abstract int availableVersionCode();
 
-    public boolean isUpdateTypeAllowed(int i) {
-        if (i == 0) {
-            return b() != null;
-        }
-        if (i == 1) {
-            return a() != null;
-        }
-        return false;
-    }
+   public abstract int updateAvailability();
 
-    public abstract String packageName();
+   public abstract int installStatus();
 
-    public abstract int updateAvailability();
+   // $FF: renamed from: a () android.app.PendingIntent
+   abstract PendingIntent method_191();
+
+   // $FF: renamed from: b () android.app.PendingIntent
+   abstract PendingIntent method_192();
+
+   public boolean isUpdateTypeAllowed(int var1) {
+      return var1 == 0?this.method_192() != null:(var1 == 1?this.method_191() != null:false);
+   }
 }
